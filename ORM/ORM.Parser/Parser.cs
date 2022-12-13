@@ -19,12 +19,94 @@ namespace ORM.Parser
 
         public void Parse()
         {
-            throw new NotImplementedException();
+            Stmts();
+        }
+        private void Stmts()
+        {
+            if (this._lookAhead == TokenType.OpenBrace)
+            {
+                Stmt();
+                Stmts();
+            }
         }
 
+        private void Stmt()
+        {
+            Match(TokenType.Identifier);
+            Match(TokenType.Dot);
+            if (this._lookAhead.TokenType == TokenType.WhereKeyword)
+            {
+                WhereStmt();
+            } else
+            {
+                SelectStmt();
+            }
+        }
+
+        private void WhereStmt()
+        {
+            Match(TokenType.WhereKeyword);
+            Match(TokenType.LeftParens);
+            Match(TokenType.Identifier);
+            Match(TokenType.Arrow);
+            WhereExpr();
+            Match(TokenType.RightParens);
+        }
+
+        private void WhereExpr()
+        {
+            if (this._lookAhead.TokenType != TokenType.RightParens)
+            {
+                switch (this._lookAhead.TokenType)
+                {
+                    case TokenType.Identifier:
+                        Match(TokenType.Identifier);
+                        Match(TokenType.Dot);
+                        Match(TokenType.Identifier);
+                        break;
+
+                }
+            }
+        }
         private void Move()
         {
             this._lookAhead = this._scanner.GetNextToken();
+        }
+
+        private void PClass()
+        {
+            Match(TokenType.ClassKeyword);
+            Match(TokenType.Identifier);
+            Match(TokenType.OpenBrace);
+            Match(TokenType.OpenBrace);
+            ClassBlock();
+            Match(TokenType.CloseBrace);
+        }
+
+        private void ClassBlock()
+        {
+            if (this._lookAhead.TokenType != TokenType.CloseBrace)
+            {
+                switch(this._lookAhead.TokenType)
+                {
+                    case TokenType.StringKeyword:
+                        Match(TokenType.StringKeyword);
+                        break;
+                    case TokenType.IntKeyword:
+                        Match(TokenType.IntKeyword);
+                        break;
+                    case TokenType.FloatKeyword:
+                        Match(TokenType.FloatKeyword);
+                        break;
+                    case TokenType.Identifier:
+                        Match(TokenType.Identifier);
+                        Match(TokenType.SemiColon);
+                        break;
+                    default:
+                        throw new Exception();
+                }
+                ClassBlock();
+            }
         }
 
         private void Match(TokenType expectedTokenType)

@@ -30,5 +30,6 @@
         Arrow,
         EqualOperator,
         Minus,
+        NewKeyword,
     }
 }

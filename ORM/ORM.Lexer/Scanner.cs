@@ -23,7 +23,7 @@ namespace ORM.Lexer
                 ["string"] = TokenType.StringKeyword,
                 ["where"] = TokenType.WhereKeyword,
                 ["select"] = TokenType.SelectKeyword,
-                ["new"] = TokenType.SelectKeyword,
+                ["new"] = TokenType.NewKeyword,
             };
         }
 
