@@ -53,6 +53,16 @@ namespace ORM.Parser
             Match(TokenType.RightParens);
         }
 
+        private void SelectStmt()
+        {
+            Match(TokenType.SelectKeyword);
+            Match(TokenType.LeftParens);
+            Match(TokenType.Identifier);
+            Match(TokenType.Arrow);
+            WhereExpr();
+            Match(TokenType.RightParens);
+        }
+
         private void WhereExpr()
         {
             if (this._lookAhead.TokenType != TokenType.RightParens)
@@ -63,9 +73,52 @@ namespace ORM.Parser
                         Match(TokenType.Identifier);
                         Match(TokenType.Dot);
                         Match(TokenType.Identifier);
+                        BoolExpr();
                         break;
-
+                    case TokenType.IntConstant:
+                        Match(TokenType.IntConstant);
+                        break;
+                    case TokenType.FloatConstant:
+                        Match(TokenType.FloatConstant);
+                        break;
+                    case TokenType.StringConstant:
+                        Match(TokenType.StringConstant);
+                        break;
                 }
+                WhereExpr();
+            }
+        }
+
+        private void BoolExpr()
+        {
+            switch (this._lookAhead.TokenType)
+            {
+                case TokenType.GreaterThan:
+                    Match(TokenType.GreaterThan);
+                    if (_lookAhead.TokenType == TokenType.Equal)
+                    {
+                        Match(TokenType.Equal);
+                    }
+                    break;
+                case TokenType.LessThan:
+                    Match(TokenType.LessThan);
+                    if (_lookAhead.TokenType == TokenType.Equal)
+                    {
+                        Match(TokenType.Equal);
+                    }
+                    break;
+                case TokenType.NotEqual:
+                    Match(TokenType.NotEqual);
+                    break;
+                case TokenType.EqualOperator:
+                    Match(TokenType.EqualOperator);
+                    break;
+                case TokenType.Or:
+                    Match(TokenType.Or);
+                    break;
+                case TokenType.And:
+                    Match(TokenType.And);
+                    break;
             }
         }
         private void Move()
