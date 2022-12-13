@@ -19,11 +19,13 @@ namespace ORM.Parser
 
         public void Parse()
         {
+            PClass();
+            PClass();
             Stmts();
         }
         private void Stmts()
         {
-            if (this._lookAhead == TokenType.OpenBrace)
+            if (this._lookAhead != TokenType.EOF)
             {
                 Stmt();
                 Stmts();
