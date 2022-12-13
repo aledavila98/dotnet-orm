@@ -59,8 +59,9 @@ namespace ORM.Parser
             Match(TokenType.LeftParens);
             Match(TokenType.Identifier);
             Match(TokenType.Arrow);
-            WhereExpr();
-            Match(TokenType.RightParens);
+            Match(TokenType.OpenBrace);
+            SelectExpr();
+            Match(TokenType.CloseBrace);
         }
 
         private void WhereExpr()
@@ -86,6 +87,38 @@ namespace ORM.Parser
                         break;
                 }
                 WhereExpr();
+            }
+        }
+
+        private void SelectExpr()
+        {
+            if (this._lookAhead.TokenType != TokenType.CloseBrace)
+            {
+                if (this._lookAhead.TokenType == TokenType.Identifier)
+                {
+                    Match(TokenType.Identifier);
+                    if (this._lookAhead.TokenType == TokenType.Equal)
+                    {
+                        Match(TokenType.Equal);
+                    }
+                    switch (this._lookAhead.TokenType)
+                    {
+                        case TokenType.IntConstant:
+                            Match(TokenType.IntConstant);
+                            break;
+                        case TokenType.FloatConstant:
+                            Match(TokenType.FloatConstant);
+                            break;
+                        case TokenType.StringConstant:
+                            Match(TokenType.StringConstant);
+                            break;
+                        case TokenType.Identifier:
+                            Match(TokenType.Identifier);
+                            break;
+                    }
+                    Match(TokenType.Comma);
+                }
+                SelectExpr();
             }
         }
 
