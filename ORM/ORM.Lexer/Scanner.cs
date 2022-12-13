@@ -122,7 +122,7 @@ namespace ORM.Lexer
                         lexeme.Append(currentChar);
                         return new Token
                         {
-                            TokenType = TokenType.GreaterThan,
+                            TokenType = TokenType.Minus,
                             Column = _input.Position.Column,
                             Line = _input.Position.Line,
                             Lexeme = lexeme.ToString()

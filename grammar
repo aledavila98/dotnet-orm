@@ -1,1 +1,36 @@
+CLASS -> class IDENT { block }
+IDENT -> stringValue
+block -> decl | E
+decl -> accessType dataType IDENT;
+assignation -> IDENT = assignValue
+assignValue -> value | IDENT.IDENT
+value -> stringValue | intValue | doubleValue
+stringValue -> [a-z]*([a-z]^[0-9])+
+intValue -> [0-9]+
+doubleValue -> ([0-9]+)* . intValue
+accessType -> public | private
+dataType -> int | string | double
+operator -> + | - | / | *
+propertyAccess -> IDENT.propertyAction
+propertyAction -> pWhere.pSelect | pSelect
+pWhere -> Where(condition)
+pSelect -> Select(IDENT => new IDENT{ selectAssignation });
+selectAssignation -> assignation, selectAssignation | E
+condition -> IDENT => p_condition 
+p_condition -> conditionValue bool_operator p_condition | E
+conditionValue -> IDENT.IDENT | value
+bool_operator -> > | < | >= | <= | == | && | ||
 
+class hola {
+   public double Age;
+}
+
+class Result {
+   public int ID;
+   public string test;
+}
+
+hola.Where(a => a.Age == 20).Select(b => new Result{
+    ID = 2,
+    test = "HOLAAA"
+});

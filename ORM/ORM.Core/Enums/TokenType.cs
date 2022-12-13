@@ -29,5 +29,6 @@
         StringConstant,
         Arrow,
         EqualOperator,
+        Minus,
     }
 }
